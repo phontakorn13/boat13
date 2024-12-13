@@ -1,95 +1,77 @@
 #include <Arduino.h>
 
-int green1=23;
-int yellow1=19;
-int red1=18;
+int potPin = 36;
+int led1 = 23;
+int led2 = 19;
+int led3 = 18;
+int led4 = 5;
+int led5 = 17;
+int led6 = 16;
+int led7 = 4;
+int led8 = 0;
 
-int green2=17;
-int yellow2=16;
-int red2=4;
-
-int Button=15;
-int buttonState = 0;
-bool blinkingMode = false;
-
-void setup() 
+void setup()
 {
- pinMode(23,OUTPUT);
- pinMode(19,OUTPUT);
- pinMode(18,OUTPUT);
-
- pinMode(17,OUTPUT);
- pinMode(16,OUTPUT);
- pinMode(4,OUTPUT);
-
- pinMode(15,INPUT_PULLUP);
+  pinMode(led1,OUTPUT);
+  pinMode(led2,OUTPUT);
+  pinMode(led3,OUTPUT);
+  pinMode(led4,OUTPUT);
+  pinMode(led5,OUTPUT);
+  pinMode(led6,OUTPUT);
+  pinMode(led7,OUTPUT);
+  pinMode(led8,OUTPUT);
+  ledcSetup(0,5000,8);
 }
 
-void loop() 
+void loop()
 {
-  buttonState = digitalRead(Button);
+    int potValue = analogRead(potPin);
+    int dutyCycle = map(potValue,0,4095,0,255);
+    ledcWrite(0,dutyCycle);
+    delay(10);
 
- if (buttonState == HIGH) {
-    blinkingMode = !blinkingMode;  // สลับสถานะโหมด
-    delay(500); // หน่วงเวลาหลังการกดปุ่ม เพื่อป้องกันการกดซ้ำ
-    if (blinkingMode) {
-      Serial.println("Blinking mode activated");
-    } else {
-      Serial.println("Blinking mode deactivated");
+    if(potValue >= 0 && potValue <= 500)
+    {
+      digitalWrite(led1,HIGH);
+      digitalWrite(led2,LOW);
+      digitalWrite(led3,LOW);
+      digitalWrite(led4,LOW);
+      digitalWrite(led5,LOW);
+      digitalWrite(led6,LOW);
+      digitalWrite(led7,LOW);
+      digitalWrite(led8,LOW);
     }
-  }
-
-if (blinkingMode) {
-    // กระพริบไฟแดงและไฟเขียวทั้งสองแยก
-    digitalWrite(23,HIGH);
-    digitalWrite(19,HIGH);
-    digitalWrite(18,HIGH);
-    digitalWrite(17,HIGH);
-    digitalWrite(16,HIGH);
-    digitalWrite(4,HIGH);
-    delay(500); // หน่วงเวลา 500 มิลลิวินาที (ไฟกระพริบ)
-    digitalWrite(23,LOW);
-    digitalWrite(19,LOW);
-    digitalWrite(18,LOW);
-    digitalWrite(17,LOW);
-    digitalWrite(16,LOW);
-    digitalWrite(4,LOW);
-    delay(500); // หน่วงเวลา 500 มิลลิวินาที (ไฟกระพริบ)
-  }
-
-else{
-  digitalWrite(23,HIGH);
-  digitalWrite(19,LOW);
-  digitalWrite(18,LOW);
-  digitalWrite(17,LOW);
-  digitalWrite(16,LOW);
-  digitalWrite(4,HIGH);
-  delay(5000);
-
-  digitalWrite(23,LOW);
-  digitalWrite(19,HIGH);
-  digitalWrite(18,LOW);
-  digitalWrite(17,LOW);
-  digitalWrite(16,LOW);
-  digitalWrite(4,HIGH);
-  delay(2000);
-
-  digitalWrite(23,LOW);
-  digitalWrite(19,LOW);
-  digitalWrite(18,HIGH);
-  digitalWrite(17,HIGH);
-  digitalWrite(16,LOW);
-  digitalWrite(4,LOW);
-  delay(5000);
-
-  digitalWrite(23,LOW);
-  digitalWrite(19,LOW);
-  digitalWrite(18,HIGH);
-  digitalWrite(17,LOW);
-  digitalWrite(16,HIGH);
-  digitalWrite(4,LOW);
-  delay(2000);
+    else if(potValue >= 501 && potValue <= 1000) 
+    {
+      digitalWrite(led1,HIGH);
+      digitalWrite(led2,HIGH);
+      digitalWrite(led3,HIGH);
+      digitalWrite(led4,LOW);
+      digitalWrite(led5,LOW);
+      digitalWrite(led6,LOW);
+      digitalWrite(led7,LOW);
+      digitalWrite(led8,LOW);
+    }
+    else if(potValue >= 1001 && potValue <= 2000)
+    {
+      digitalWrite(led1,HIGH);
+      digitalWrite(led2,HIGH);
+      digitalWrite(led3,HIGH);
+      digitalWrite(led4,HIGH);
+      digitalWrite(led5,HIGH);
+      digitalWrite(led6,LOW);
+      digitalWrite(led7,LOW);
+      digitalWrite(led8,LOW);
+    }
+    else if(potValue >= 2001)
+    {
+      digitalWrite(led1,HIGH);
+      digitalWrite(led2,HIGH);
+      digitalWrite(led3,HIGH);
+      digitalWrite(led4,HIGH);
+      digitalWrite(led5,HIGH);
+      digitalWrite(led6,HIGH);
+      digitalWrite(led7,HIGH);
+      digitalWrite(led8,HIGH);
+    }
 }
-
-}
-
